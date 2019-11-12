@@ -3,7 +3,7 @@ from algo import algo
 
 
 def main():
-    result = algo(2)
+    result = algo('семейство')
     print(result)
 
 
