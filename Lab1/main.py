@@ -6,7 +6,7 @@ from interface import Interface
 
 
 def main():
-    result = algo('семейство')
+    result = algo('сеть')
     print(result)
 
     app = QApplication(sys.argv)
