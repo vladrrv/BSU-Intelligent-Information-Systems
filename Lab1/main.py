@@ -6,8 +6,8 @@ from interface import Interface
 
 
 def main():
-    result = algo('сеть')
-    print(result)
+    #result = algo('сеть')
+    #print(result)
 
     app = QApplication(sys.argv)
     window = Interface()

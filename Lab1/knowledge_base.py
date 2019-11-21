@@ -109,4 +109,4 @@ def has_question(feature):
 
 
 def get_question(feature):
-    return str(feature) + '? - variants: ' + ', '.join(features[feature])
+    return str(feature).capitalize() + '? ', features[feature]
