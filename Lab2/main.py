@@ -14,7 +14,7 @@ def generate_data(n=2, num_samples=10, num_classes=3):
 
 
 def load_data(path):
-    df = pd.read_csv(path)
+    df = pd.read_csv(path, index_col='id')
     cols = list(df)
     x = df[cols[1:-1]].values
     y = df[cols[-1]].values[..., np.newaxis]
@@ -51,7 +51,7 @@ def main():
     # x, y = generate_data(n=20, num_samples=100, num_classes=5)
     x, y = load_data('dataset.csv')
 
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=SEED)
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.5, random_state=SEED)
     print('Train samples: ', x_train.shape[0])
     print('Test samples: ', x_test.shape[0])
 
