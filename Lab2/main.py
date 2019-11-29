@@ -2,8 +2,19 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
+from tabulate import tabulate
 
-SEED = 42
+import sys
+from PyQt5 import uic
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
+
+qtCreatorFile = "interface.ui"
+
+Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
+
+
+SEED = None
 np.random.seed(SEED)
 
 
@@ -59,6 +70,37 @@ def main():
     score = accuracy_score(y_test, y_pred)
     print('Accuracy: ', score)
 
+    return x_train, x_test, y_train, y_test, y_pred, score
+
+
+class MyApp(QMainWindow, Ui_MainWindow):
+    def __init__(self):
+        QMainWindow.__init__(self)
+        Ui_MainWindow.__init__(self)
+        self.setupUi(self)
+
+        self.button_start.clicked.connect(self.start)
+
+    def start(self):
+        x_train, x_test, y_train, y_test, y_pred, score = main()
+        df_train = pd.DataFrame(data=np.concatenate((x_train,y_train), axis=1),
+                                columns=[f'Q_{i}' for i in range(x_train.shape[1])]+['class'])
+        df_test = pd.DataFrame(data=np.column_stack((x_test,y_test,y_pred)),
+                               columns=[f'Q_{i}' for i in range(x_train.shape[1])]+['class','predicted'])
+        str_table_train = tabulate(df_train, headers='keys', tablefmt='psql')
+        str_table_test = tabulate(df_test, headers='keys', tablefmt='psql')
+        self.tb_train.setText(str_table_train)
+        self.tb_test.setText(str_table_test)
+        self.le_score.setText(str(score))
+
 
 if __name__ == "__main__":
-    main()
+    # main()
+
+    try:
+        app = QApplication(sys.argv)
+        window = MyApp()
+        window.show()
+        sys.exit(app.exec_())
+    except Exception as e:
+        print(e)
